@@ -9,23 +9,20 @@
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
-
-    <!-- Panel de control con los botones de vista (izquierda) -->
-    <div id="controlPanel">
-        <button id="viewButton1"> <img src="icon-upper.png" alt="Vista Superior"> </button>
-        <button id="viewButton2"> <img src="icon-lower.png" alt="Vista Inferior"> </button>
-        <button id="viewButton3"> <img src="icon-both.png" alt="Vista Completa"> </button>
-    </div>
-
-    <!-- Visor 3D -->
+    
+    <!-- Viewer 3D -->
     <div id="viewer" style="width: 100%; height: 600px; background-color: white;"></div>
 
-    <!-- Controles inferiores: play, pausa, bucle y barra de deslizamiento -->
-    <div id="bottomControls">
-        <button id="playButton"> <img src="icon-play.png" alt="Play"> </button>
-        <button id="pauseButton"> <img src="icon-pause.png" alt="Pausa"> </button>
-        <button id="loopButton"> <img src="icon-loop.png" alt="Bucle"> </button>
-        <input type="range" id="alignerRange" min="1" max="10" value="1">
+    <!-- Control Slider para seleccionar el alineador -->
+    <div id="alignerControls">
+        <input type="range" id="alignerSlider" min="1" max="10" value="1">
+        <span id="alignerValue">1</span> / <span id="maxAligners">10</span> Alineadores
+    </div>
+
+    <!-- Botones para activar/desactivar maxilar y mandíbula -->
+    <div id="controls">
+        <button id="showMaxilla">Mostrar/Ocultar Maxilar</button>
+        <button id="showMandible">Mostrar/Ocultar Mandíbula</button>
     </div>
 
     <script src="app.js"></script>
