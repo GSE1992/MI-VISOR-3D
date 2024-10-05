@@ -8,8 +8,60 @@ h1 {
     color: #6A0DAD;
 }
 
+#controlPanel {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#controlPanel button {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#controlPanel img {
+    width: 100%;
+    height: 100%;
+}
+
+#viewer {
+    margin: auto;
+    width: 80%;
+    height: 600px;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+#bottomControls {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#bottomControls button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#bottomControls img {
+    width: 30px;
+    height: 30px;
+}
+
 input[type="range"] {
-    width: 300px;
+    width: 400px;
 }
 
 button {

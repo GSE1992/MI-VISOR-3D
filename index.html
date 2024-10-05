@@ -3,16 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visor 3D Alineadores</title>
+    <title>Visor 3D de Alineadores</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
+
+    <!-- Panel de control con los botones de vista (izquierda) -->
+    <div id="controlPanel">
+        <button id="viewButton1"> <img src="icon-upper.png" alt="Vista Superior"> </button>
+        <button id="viewButton2"> <img src="icon-lower.png" alt="Vista Inferior"> </button>
+        <button id="viewButton3"> <img src="icon-both.png" alt="Vista Completa"> </button>
+    </div>
+
+    <!-- Visor 3D -->
     <div id="viewer" style="width: 100%; height: 600px; background-color: white;"></div>
-    <input type="range" id="alignerRange" min="1" max="10" value="1">
-    <button id="loopButton">Activar Bucle</button>
-    
+
+    <!-- Controles inferiores: play, pausa, bucle y barra de deslizamiento -->
+    <div id="bottomControls">
+        <button id="playButton"> <img src="icon-play.png" alt="Play"> </button>
+        <button id="pauseButton"> <img src="icon-pause.png" alt="Pausa"> </button>
+        <button id="loopButton"> <img src="icon-loop.png" alt="Bucle"> </button>
+        <input type="range" id="alignerRange" min="1" max="10" value="1">
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
