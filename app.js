@@ -19,7 +19,7 @@ const loader = new THREE.STLLoader();
 // Función para cargar y mostrar los archivos STL
 function cargarAlineador(ruta) {
     loader.load(ruta, function (geometry) {
-        const material = new THREE.MeshPhongMaterial({ color: 0xAAAAAA });
+        const material = new THREE.MeshPhongMaterial({ color: 0x0055ff, specular: 0x111111, shininess: 200 });
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
         renderer.render(scene, camera);
@@ -27,18 +27,22 @@ function cargarAlineador(ruta) {
 }
 
 // Eventos de clic para cargar diferentes alineadores
-document.getElementById('botonAlineador1').onclick = function() {
-    cargarAlineador('Alineador 1/Models/Tooth_1.stl');
+document.getElementById('botonAlineador1').onclick = function () {
+    cargarAlineador('Alineador 1/Models/Tooth_10.stl');
+};
+document.getElementById('botonAlineador2').onclick = function () {
+    cargarAlineador('Alineador 2/Models/Tooth_20.stl');
+};
+document.getElementById('botonAlineador3').onclick = function () {
+    cargarAlineador('Alineador 3/Models/Tooth_30.stl');
+};
+document.getElementById('botonAlineador4').onclick = function () {
+    cargarAlineador('Alineador 4/Models/Tooth_40.stl');
 };
 
-document.getElementById('botonAlineador2').onclick = function() {
-    cargarAlineador('Alineador 2/Models/Tooth_1.stl');
-};
-
-document.getElementById('botonAlineador3').onclick = function() {
-    cargarAlineador('Alineador 3/Models/Tooth_1.stl');
-};
-
-document.getElementById('botonAlineador4').onclick = function() {
-    cargarAlineador('Alineador 4/Models/Tooth_1.stl');
-};
+// Renderizar la escena
+function animate() {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+}
+animate();
