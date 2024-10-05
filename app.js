@@ -21,7 +21,7 @@ function cargarAlineador(carpeta) {
     const archivos = [
         'Tooth_2.stl', 'Tooth_3.stl', 'Tooth_4.stl', 'Tooth_5.stl', 'Tooth_6.stl', 'Tooth_7.stl',
         'Tooth_8.stl', 'Tooth_9.stl', 'Tooth_10.stl', 'Tooth_11.stl', 'Tooth_12.stl', 'Tooth_13.stl',
-        'Tooth_14.stl', 'Tooth_15.stl', 'Tooth_16.stl', 'Tooth_17.stl', 'Tooth_18.stl', 'Tooth_19.stl',
+        'Tooth_14.stl', 'Tooth_15.stl', 'Tooth_18.stl', 'Tooth_19.stl',
         'Tooth_20.stl', 'Tooth_21.stl', 'Tooth_22.stl', 'Tooth_23.stl', 'Tooth_24.stl', 'Tooth_25.stl',
         'Tooth_26.stl', 'Tooth_27.stl', 'Tooth_28.stl', 'Tooth_29.stl', 'Tooth_30.stl', 'Tooth_31.stl',
         'Tooth_LowerJaw.stl', 'Tooth_UpperJaw.stl'// Agrega todos los archivos STL que desees cargar
