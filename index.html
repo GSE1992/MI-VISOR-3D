@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visor 3D de Alineadores</title>
-    <script src="three.min.js"></script> <!-- Añadir la librería Three.js -->
-    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/loaders/STLLoader.js"></script> <!-- Loader para STL -->
+    <script type="module" src="./app.js"></script>
     <style>
         body {
             text-align: center;
@@ -13,27 +12,27 @@
             margin: 0;
             padding: 0;
         }
+
         h1 {
             color: purple;
-            margin-top: 20px;
         }
-        #viewer-container {
-            width: 100%;
-            height: 600px;
-            margin-top: 20px;
-        }
-        canvas {
-            width: 100%;
-            height: 600px;
-        }
-        .buttons {
-            margin-top: 20px;
-        }
-        .buttons button {
+
+        button {
             margin: 10px;
             padding: 10px;
-            font-size: 16px;
+            background-color: #d3d3d3;
+            border: none;
             cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #a9a9a9;
+        }
+
+        #viewer-container {
+            width: 100%;
+            height: 80vh;
         }
     </style>
 </head>
@@ -41,74 +40,12 @@
     <h1>Visor 3D de Alineadores</h1>
 
     <!-- Botones para seleccionar alineadores -->
-    <div class="buttons">
-        <button onclick="cargarAlineador(1)">Alineador 1</button>
-        <button onclick="cargarAlineador(2)">Alineador 2</button>
-        <button onclick="cargarAlineador(3)">Alineador 3</button>
-        <button onclick="cargarAlineador(4)">Alineador 4</button>
-    </div>
+    <button id="botonAlineador1">Alineador 1</button>
+    <button id="botonAlineador2">Alineador 2</button>
+    <button id="botonAlineador3">Alineador 3</button>
+    <button id="botonAlineador4">Alineador 4</button>
 
     <!-- Contenedor del visor 3D -->
     <div id="viewer-container"></div>
-
-    <script>
-        // Configuración básica del Visor 3D usando Three.js
-        var scene, camera, renderer, loader, stlMesh;
-
-        init(); // Inicializa el visor 3D
-
-        function init() {
-            // Crear la escena
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xffffff);
-
-            // Crear la cámara
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 0, 100);
-
-            // Crear el renderizador
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, 600);
-            document.getElementById('viewer-container').appendChild(renderer.domElement);
-
-            // Añadir luz a la escena
-            var light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(0, 0, 1).normalize();
-            scene.add(light);
-
-            // Cargar el archivo STL inicial
-            loader = new THREE.STLLoader();
-            cargarAlineador(1); // Carga por defecto el Alineador 1
-
-            // Renderizar la escena
-            render();
-        }
-
-        function cargarAlineador(alineador) {
-            if (stlMesh) {
-                scene.remove(stlMesh); // Elimina el modelo anterior si existe
-            }
-
-            // Ruta al archivo STL en GitHub
-            var stlFilePath = 'https://raw.githubusercontent.com/GSE1992/MI-VISOR-3D/main/Alineador' + alineador + '/Models/Tooth1.stl';
-            
-            // Cargar el archivo STL
-            loader.load(stlFilePath, function (geometry) {
-                var material = new THREE.MeshPhongMaterial({ color: 0x0055ff });
-                stlMesh = new THREE.Mesh(geometry, material);
-                stlMesh.rotation.x = -0.5 * Math.PI;
-                stlMesh.scale.set(0.5, 0.5, 0.5);
-                scene.add(stlMesh);
-            });
-
-            render();
-        }
-
-        // Función para renderizar la escena en un bucle
-        function render() {
-            requestAnimationFrame(render);
-            renderer.render(scene, camera);
-        }
-    </script>
 </body>
 </html>

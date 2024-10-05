@@ -1,55 +1,69 @@
-// Importar STLLoader desde el CDN correctamente
-import { STLLoader } from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/jsm/loaders/STLLoader.js';
+import * as THREE from './three.module.min.js';
+import { STLLoader } from './STLLoader.js';
 
-// Crear escena, cámara y renderizador
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-let renderer = new THREE.WebGLRenderer();
+// Crear la escena y la cámara
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+// Crear el renderer y añadirlo al DOM
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('viewer').appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
-// Establecer luz
-let light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(1, 1, 1).normalize();
-scene.add(light);
+// Añadir luz a la escena
+const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+scene.add(ambientLight);
 
-// Posicionar la cámara
-camera.position.z = 150;
-
-// Cargar archivos STL
+// Cargar los modelos STL
 const loader = new STLLoader();
-let models = [];
-let modelPaths = [
-    'Alineador 1/Models/Tooth_2.stl',
-    'Alineador 1/Models/Tooth_3.stl',
-    'Alineador 1/Models/Tooth_4.stl',
-    // Incluye las demás rutas a los archivos STL aquí
-];
 
-function loadSTLFiles() {
-    modelPaths.forEach(path => {
-        loader.load(path, geometry => {
-            let material = new THREE.MeshLambertMaterial({ color: 0xffffff });
-            let model = new THREE.Mesh(geometry, material);
-            models.push(model);
-            scene.add(model);
-        });
+function cargarModelo(url) {
+    loader.load(url, function (geometry) {
+        // Eliminar todos los objetos previos de la escena para evitar duplicados
+        while (scene.children.length > 1) {
+            scene.remove(scene.children[1]);
+        }
+
+        // Crear el material y el mesh del objeto
+        const material = new THREE.MeshNormalMaterial();
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+
+        // Ajustar la posición de la cámara
+        camera.position.z = 100;
+        animate();
     });
 }
 
-// Llamar la función para cargar los archivos
-loadSTLFiles();
-
-// Función de renderizado
+// Función de animación
 function animate() {
     requestAnimationFrame(animate);
-
-    // Animación o rotación de los modelos (si lo deseas)
-    models.forEach(model => {
-        model.rotation.x += 0.01;
-        model.rotation.y += 0.01;
-    });
-
     renderer.render(scene, camera);
 }
-animate();
+
+// Cargar el primer modelo como predeterminado
+cargarModelo('./Alineador1/Models/Tooth_1.stl');
+
+// Añadir eventos para los botones
+document.getElementById('botonAlineador1').addEventListener('click', function () {
+    cargarModelo('./Alineador1/Models/Tooth_1.stl');
+});
+
+document.getElementById('botonAlineador2').addEventListener('click', function () {
+    cargarModelo('./Alineador2/Models/Tooth_1.stl');
+});
+
+document.getElementById('botonAlineador3').addEventListener('click', function () {
+    cargarModelo('./Alineador3/Models/Tooth_1.stl');
+});
+
+document.getElementById('botonAlineador4').addEventListener('click', function () {
+    cargarModelo('./Alineador4/Models/Tooth_1.stl');
+});
+
+// Actualizar el tamaño del visor cuando se cambia el tamaño de la ventana
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+});
