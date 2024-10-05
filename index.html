@@ -9,20 +9,20 @@
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
-    
-    <!-- Viewer 3D -->
     <div id="viewer" style="width: 100%; height: 600px; background-color: white;"></div>
 
-    <!-- Control Slider para seleccionar el alineador -->
-    <div id="alignerControls">
-        <input type="range" id="alignerSlider" min="1" max="10" value="1">
-        <span id="alignerValue">1</span> / <span id="maxAligners">10</span> Alineadores
+    <div id="controls">
+        <button id="mostrarMaxilar">Maxilar</button>
+        <button id="mostrarOclusion">Oclusión</button>
+        <button id="mostrarMandibula">Mandíbula</button>
     </div>
 
-    <!-- Botones para activar/desactivar maxilar y mandíbula -->
-    <div id="controls">
-        <button id="showMaxilla">Mostrar/Ocultar Maxilar</button>
-        <button id="showMandible">Mostrar/Ocultar Mandíbula</button>
+    <div id="slider-container">
+        <button id="play">▶️</button>
+        <button id="prev">⏮️</button>
+        <input type="range" id="alignerRange" min="1" max="10" value="1">
+        <span id="alignerNumber">1 / 10 Alineadores</span>
+        <button id="loopButton">🔁</button>
     </div>
 
     <script src="app.js"></script>
