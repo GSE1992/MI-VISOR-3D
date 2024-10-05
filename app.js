@@ -1,8 +1,4 @@
-// Importa THREE.js y STLLoader
-import * as THREE from './three.module.min.js'; // Asegúrate de que la ruta esté correcta
-import { STLLoader } from './STLLoader.js'; // Asegúrate de que la ruta esté correcta
-
-// Variables para la escena, cámara y renderizador
+// Inicializa la escena, la cámara y el renderizador
 let scene, camera, renderer;
 
 // Función para inicializar la escena
@@ -28,8 +24,6 @@ function init() {
 // Función para renderizar la escena
 function animate() {
     requestAnimationFrame(animate);
-
-    // Renderizar la escena
     renderer.render(scene, camera);
 }
 
@@ -38,7 +32,7 @@ function cargarAlineador(alineador) {
     console.log(`Cargando Alineador ${alineador}`); // Ver mensaje en la consola
     scene.clear(); // Limpia la escena actual
 
-    const loader = new STLLoader();
+    const loader = new THREE.STLLoader();
     loader.load(`./Alineador${alineador}/Models/Tooth_1.stl`, function (geometry) {
         console.log('Archivo STL cargado exitosamente'); // Ver mensaje en la consola
         const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
@@ -58,4 +52,3 @@ document.getElementById('botonAlineador4').addEventListener('click', () => carga
 // Inicializar y ejecutar la animación
 init();
 animate();
-
