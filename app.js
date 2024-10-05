@@ -19,7 +19,7 @@ const loader = new THREE.STLLoader();
 // Función para cargar y mostrar los alineadores
 function cargarAlineador(ruta) {
     loader.load(ruta, function (geometry) {
-        const material = new THREE.MeshPhongMaterial({ color: 0xAAAAAA });
+        const material = new THREE.MeshPhongMaterial({ color: 0x555555 });
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
         renderer.render(scene, camera);
@@ -27,22 +27,18 @@ function cargarAlineador(ruta) {
 }
 
 // Eventos de clic para cargar diferentes alineadores
-document.getElementById('botonAlineador1').addEventListener('click', function() {
+document.getElementById('botonAlineador1').addEventListener('click', function () {
     cargarAlineador('Alineador1/Models/Tooth_1.stl');
 });
-document.getElementById('botonAlineador2').addEventListener('click', function() {
-    cargarAlineador('Alineador2/Models/Tooth_1.stl');
-});
-document.getElementById('botonAlineador3').addEventListener('click', function() {
-    cargarAlineador('Alineador3/Models/Tooth_1.stl');
-});
-document.getElementById('botonAlineador4').addEventListener('click', function() {
-    cargarAlineador('Alineador4/Models/Tooth_1.stl');
+
+document.getElementById('botonAlineador2').addEventListener('click', function () {
+    cargarAlineador('Alineador2/Models/Tooth_2.stl');
 });
 
-// Animación de renderizado
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-}
-animate();
+document.getElementById('botonAlineador3').addEventListener('click', function () {
+    cargarAlineador('Alineador3/Models/Tooth_3.stl');
+});
+
+document.getElementById('botonAlineador4').addEventListener('click', function () {
+    cargarAlineador('Alineador4/Models/Tooth_4.stl');
+});
