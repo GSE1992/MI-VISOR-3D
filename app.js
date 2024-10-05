@@ -1,100 +1,89 @@
-// Configuración del fondo blanco
-scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff); // Fondo blanco
+// Variables para los alineadores
+const alignerFiles = [
+    "Tooth_2.stl", "Tooth_3.stl", "Tooth_4.stl", "Tooth_5.stl", "Tooth_6.stl", 
+    "Tooth_7.stl", "Tooth_8.stl", "Tooth_9.stl", "Tooth_10.stl", "Tooth_11.stl",
+    "Tooth_12.stl", "Tooth_13.stl", "Tooth_14.stl", "Tooth_15.stl", "Tooth_18.stl", 
+    "Tooth_19.stl", "Tooth_20.stl", "Tooth_21.stl", "Tooth_22.stl", "Tooth_23.stl", 
+    "Tooth_24.stl", "Tooth_25.stl", "Tooth_26.stl", "Tooth_27.stl", "Tooth_28.stl", 
+    "Tooth_29.stl", "Tooth_30.stl", "Tooth_31.stl", "Tooth_LowerJaw.stl", "Tooth_UpperJaw.stl"
+];
 
-// Configuración de la cámara y luces
-camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+// Cargar los archivos STL
+function loadSTLFiles(alignerIndex) {
+    const alignerPath = `Alineador ${alignerIndex + 1}/Models/`; // ruta de los alineadores
 
-renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// Añadir controles de órbita para que el usuario pueda rotar la vista 3D
-var controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-// Cargar modelos de los alineadores
-
-const loader = new THREE.STLLoader(); // Asegúrate de que tienes cargada la librería STLLoader
-
-// Función para cargar y mostrar los dientes
-function cargarDientes(alineadorNum) {
-  const teethFiles = [
-    `Alineador ${alineadorNum}/Models/Tooth_2.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_3.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_4.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_5.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_6.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_7.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_8.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_9.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_10.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_11.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_12.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_13.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_14.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_15.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_16.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_17.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_18.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_19.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_20.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_21.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_22.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_23.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_24.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_25.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_26.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_27.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_28.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_29.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_30.stl`,
-    `Alineador ${alineadorNum}/Models/Tooth_31.stl`
-  ];
-
-  teethFiles.forEach(function (file) {
-    loader.load(file, function (geometry) {
-      var toothMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Blanco para los dientes
-      var mesh = new THREE.Mesh(geometry, toothMaterial);
-      scene.add(mesh);
-    }, undefined, function (error) {
-      console.error('Error cargando archivo STL: ', file, error);
+    alignerFiles.forEach((file) => {
+        const filePath = alignerPath + file;
+        // Aquí iría tu código para cargar los archivos STL
+        console.log(`Cargando: ${filePath}`);
+        // Utiliza tu función de carga de STL en esta parte
+        loadSTLModel(filePath);
     });
-  });
-
-  // Cargar encías (mandíbula superior e inferior)
-  loader.load(`Alineador ${alineadorNum}/Models/Tooth_UpperJaw.stl`, function (geometry) {
-    var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
-    var mesh = new THREE.Mesh(geometry, gumMaterial);
-    scene.add(mesh);
-  }, undefined, function (error) {
-    console.error('Error cargando archivo STL: ', `Alineador ${alineadorNum}/Models/Tooth_UpperJaw.stl`, error);
-  });
-
-  loader.load(`Alineador ${alineadorNum}/Models/Tooth_LowerJaw.stl`, function (geometry) {
-    var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
-    var mesh = new THREE.Mesh(geometry, gumMaterial);
-    scene.add(mesh);
-  }, undefined, function (error) {
-    console.error('Error cargando archivo STL: ', `Alineador ${alineadorNum}/Models/Tooth_LowerJaw.stl`, error);
-  });
 }
 
-// Inicializar con el Alineador 1
-cargarDientes(1);
+// Función para cargar el modelo STL (utiliza tu motor 3D como Three.js o X3DOM)
+function loadSTLModel(path) {
+    // Aquí se debe incluir el código que carga el archivo STL en el visor 3D
+    // Por ejemplo, si usas Three.js, deberías utilizar el STLLoader:
+    const loader = new THREE.STLLoader();
+    loader.load(path, function (geometry) {
+        const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh); // `scene` sería la escena donde añades los modelos 3D
+        console.log(`Modelo ${path} cargado`);
+    });
+}
 
-// Controlar los alineadores con un slider
-var slider = document.getElementById('slider');
-slider.addEventListener('input', function () {
-  var alineadorNum = this.value;
-  scene.clear(); // Limpiar la escena antes de cargar los nuevos modelos
-  cargarDientes(alineadorNum);
-});
+// Inicializar la escena 3D con Three.js
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0, 100);
 
-// Función de animación
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('viewer').appendChild(renderer.domElement);
+
+// Agregar luz a la escena
+const ambientLight = new THREE.AmbientLight(0x404040); // Luz ambiental suave
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+pointLight.position.set(50, 50, 50);
+scene.add(pointLight);
+
+// Función de animación para renderizar la escena
 function animate() {
-  requestAnimationFrame(animate);
-  controls.update(); // Actualizar controles de órbita
-  renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
 }
 animate();
+
+// Evento cuando cambia el valor del slider
+document.getElementById('slider').addEventListener('input', function (event) {
+    const alignerIndex = parseInt(event.target.value) - 1;
+    loadSTLFiles(alignerIndex);
+});
+
+// Inicializar la primera carga
+loadSTLFiles(0);
+
+// Control de botones (maxilar, mandíbula, oclusión, etc.)
+document.getElementById('maxilar').addEventListener('click', function () {
+    // Función para cargar solo el maxilar
+    console.log("Cargando maxilar...");
+});
+
+document.getElementById('mandibula').addEventListener('click', function () {
+    // Función para cargar solo la mandíbula
+    console.log("Cargando mandíbula...");
+});
+
+document.getElementById('oclusion').addEventListener('click', function () {
+    // Función para cargar la oclusión
+    console.log("Cargando oclusión...");
+});
+
+document.getElementById('reset').addEventListener('click', function () {
+    // Función para resetear la vista 3D
+    console.log("Reseteando vista 3D...");
+});
