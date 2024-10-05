@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';">
     <title>Visor 3D de Alineadores</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -17,11 +16,9 @@
     </div>
     <div id="viewer-container"></div>
 
-    <!-- Cargar Three.js desde tu repositorio en GitHub -->
-    <script src="https://username.github.io/MI-VISOR-3D/three.module.min.js"></script>
-    <!-- Cargar STLLoader.js desde tu repositorio en GitHub -->
-    <script src="https://username.github.io/MI-VISOR-3D/STLLoader.js"></script>
-    <!-- Cargar el archivo de la lógica desde tu repositorio en GitHub -->
-    <script src="https://username.github.io/MI-VISOR-3D/app.js"></script>
+    <!-- Cargar Three.js y STLLoader localmente -->
+    <script src="three.module.min.js"></script>
+    <script src="STLLoader.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
