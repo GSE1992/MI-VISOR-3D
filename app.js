@@ -1,89 +1,55 @@
-// Variables para los alineadores
-const alignerFiles = [
-    "Tooth_2.stl", "Tooth_3.stl", "Tooth_4.stl", "Tooth_5.stl", "Tooth_6.stl", 
-    "Tooth_7.stl", "Tooth_8.stl", "Tooth_9.stl", "Tooth_10.stl", "Tooth_11.stl",
-    "Tooth_12.stl", "Tooth_13.stl", "Tooth_14.stl", "Tooth_15.stl", "Tooth_18.stl", 
-    "Tooth_19.stl", "Tooth_20.stl", "Tooth_21.stl", "Tooth_22.stl", "Tooth_23.stl", 
-    "Tooth_24.stl", "Tooth_25.stl", "Tooth_26.stl", "Tooth_27.stl", "Tooth_28.stl", 
-    "Tooth_29.stl", "Tooth_30.stl", "Tooth_31.stl", "Tooth_LowerJaw.stl", "Tooth_UpperJaw.stl"
-];
+// Importar STLLoader desde el CDN correctamente
+import { STLLoader } from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/jsm/loaders/STLLoader.js';
 
-// Cargar los archivos STL
-function loadSTLFiles(alignerIndex) {
-    const alignerPath = `Alineador ${alignerIndex + 1}/Models/`; // ruta de los alineadores
-
-    alignerFiles.forEach((file) => {
-        const filePath = alignerPath + file;
-        // Aquí iría tu código para cargar los archivos STL
-        console.log(`Cargando: ${filePath}`);
-        // Utiliza tu función de carga de STL en esta parte
-        loadSTLModel(filePath);
-    });
-}
-
-// Función para cargar el modelo STL (utiliza tu motor 3D como Three.js o X3DOM)
-function loadSTLModel(path) {
-    // Aquí se debe incluir el código que carga el archivo STL en el visor 3D
-    // Por ejemplo, si usas Three.js, deberías utilizar el STLLoader:
-    const loader = new THREE.STLLoader();
-    loader.load(path, function (geometry) {
-        const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh); // `scene` sería la escena donde añades los modelos 3D
-        console.log(`Modelo ${path} cargado`);
-    });
-}
-
-// Inicializar la escena 3D con Three.js
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 0, 100);
-
-const renderer = new THREE.WebGLRenderer();
+// Crear escena, cámara y renderizador
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('viewer').appendChild(renderer.domElement);
 
-// Agregar luz a la escena
-const ambientLight = new THREE.AmbientLight(0x404040); // Luz ambiental suave
-scene.add(ambientLight);
+// Establecer luz
+let light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(1, 1, 1).normalize();
+scene.add(light);
 
-const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-pointLight.position.set(50, 50, 50);
-scene.add(pointLight);
+// Posicionar la cámara
+camera.position.z = 150;
 
-// Función de animación para renderizar la escena
+// Cargar archivos STL
+const loader = new STLLoader();
+let models = [];
+let modelPaths = [
+    'Alineador 1/Models/Tooth_2.stl',
+    'Alineador 1/Models/Tooth_3.stl',
+    'Alineador 1/Models/Tooth_4.stl',
+    // Incluye las demás rutas a los archivos STL aquí
+];
+
+function loadSTLFiles() {
+    modelPaths.forEach(path => {
+        loader.load(path, geometry => {
+            let material = new THREE.MeshLambertMaterial({ color: 0xffffff });
+            let model = new THREE.Mesh(geometry, material);
+            models.push(model);
+            scene.add(model);
+        });
+    });
+}
+
+// Llamar la función para cargar los archivos
+loadSTLFiles();
+
+// Función de renderizado
 function animate() {
     requestAnimationFrame(animate);
+
+    // Animación o rotación de los modelos (si lo deseas)
+    models.forEach(model => {
+        model.rotation.x += 0.01;
+        model.rotation.y += 0.01;
+    });
+
     renderer.render(scene, camera);
 }
 animate();
-
-// Evento cuando cambia el valor del slider
-document.getElementById('slider').addEventListener('input', function (event) {
-    const alignerIndex = parseInt(event.target.value) - 1;
-    loadSTLFiles(alignerIndex);
-});
-
-// Inicializar la primera carga
-loadSTLFiles(0);
-
-// Control de botones (maxilar, mandíbula, oclusión, etc.)
-document.getElementById('maxilar').addEventListener('click', function () {
-    // Función para cargar solo el maxilar
-    console.log("Cargando maxilar...");
-});
-
-document.getElementById('mandibula').addEventListener('click', function () {
-    // Función para cargar solo la mandíbula
-    console.log("Cargando mandíbula...");
-});
-
-document.getElementById('oclusion').addEventListener('click', function () {
-    // Función para cargar la oclusión
-    console.log("Cargando oclusión...");
-});
-
-document.getElementById('reset').addEventListener('click', function () {
-    // Función para resetear la vista 3D
-    console.log("Reseteando vista 3D...");
-});
