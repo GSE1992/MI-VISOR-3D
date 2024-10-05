@@ -1,69 +1,61 @@
-import * as THREE from './three.module.min.js';
-import { STLLoader } from './STLLoader.js';
+// Importa THREE.js y STLLoader
+import * as THREE from './three.module.min.js'; // Asegúrate de que la ruta esté correcta
+import { STLLoader } from './STLLoader.js'; // Asegúrate de que la ruta esté correcta
 
-// Crear la escena y la cámara
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+// Variables para la escena, cámara y renderizador
+let scene, camera, renderer;
 
-// Crear el renderer y añadirlo al DOM
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+// Función para inicializar la escena
+function init() {
+    // Crear la escena
+    scene = new THREE.Scene();
 
-// Añadir luz a la escena
-const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-scene.add(ambientLight);
+    // Crear la cámara
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
-// Cargar los modelos STL
-const loader = new STLLoader();
+    // Crear el renderizador
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-function cargarModelo(url) {
-    loader.load(url, function (geometry) {
-        // Eliminar todos los objetos previos de la escena para evitar duplicados
-        while (scene.children.length > 1) {
-            scene.remove(scene.children[1]);
-        }
-
-        // Crear el material y el mesh del objeto
-        const material = new THREE.MeshNormalMaterial();
-        const mesh = new THREE.Mesh(geometry, material);
-        scene.add(mesh);
-
-        // Ajustar la posición de la cámara
-        camera.position.z = 100;
-        animate();
-    });
+    // Añadir luces
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1, 1).normalize();
+    scene.add(light);
 }
 
-// Función de animación
+// Función para renderizar la escena
 function animate() {
     requestAnimationFrame(animate);
+
+    // Renderizar la escena
     renderer.render(scene, camera);
 }
 
-// Cargar el primer modelo como predeterminado
-cargarModelo('./Alineador1/Models/Tooth_1.stl');
+// Función para cargar diferentes alineadores
+function cargarAlineador(alineador) {
+    console.log(`Cargando Alineador ${alineador}`); // Ver mensaje en la consola
+    scene.clear(); // Limpia la escena actual
 
-// Añadir eventos para los botones
-document.getElementById('botonAlineador1').addEventListener('click', function () {
-    cargarModelo('./Alineador1/Models/Tooth_1.stl');
-});
+    const loader = new STLLoader();
+    loader.load(`./Alineador${alineador}/Models/Tooth_1.stl`, function (geometry) {
+        console.log('Archivo STL cargado exitosamente'); // Ver mensaje en la consola
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+        const mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+    }, undefined, function (error) {
+        console.error('Error al cargar el STL:', error); // Ver error en la consola si falla
+    });
+}
 
-document.getElementById('botonAlineador2').addEventListener('click', function () {
-    cargarModelo('./Alineador2/Models/Tooth_1.stl');
-});
+// Escuchar los botones de alineadores
+document.getElementById('botonAlineador1').addEventListener('click', () => cargarAlineador(1));
+document.getElementById('botonAlineador2').addEventListener('click', () => cargarAlineador(2));
+document.getElementById('botonAlineador3').addEventListener('click', () => cargarAlineador(3));
+document.getElementById('botonAlineador4').addEventListener('click', () => cargarAlineador(4));
 
-document.getElementById('botonAlineador3').addEventListener('click', function () {
-    cargarModelo('./Alineador3/Models/Tooth_1.stl');
-});
+// Inicializar y ejecutar la animación
+init();
+animate();
 
-document.getElementById('botonAlineador4').addEventListener('click', function () {
-    cargarModelo('./Alineador4/Models/Tooth_1.stl');
-});
-
-// Actualizar el tamaño del visor cuando se cambia el tamaño de la ventana
-window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-});
