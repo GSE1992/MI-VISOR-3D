@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visor 3D de Alineadores</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Importar Three.js desde CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
@@ -14,18 +17,19 @@
     <div id="controls" style="text-align: center; margin-top: 10px;">
         <button id="play">▶️</button>
         <button id="pause">⏸️</button>
-        <input type="range" id="slider" min="1" max="10" value="1" />
-        <span id="sliderValue">1 / 10 Alineadores</span>
+        <input id="slider" type="range" min="1" max="10" value="1">
+        <span id="alignerCount">1 / 10 Alineadores</span>
     </div>
 
     <!-- Botones laterales para visualizar maxilar, mandíbula y oclusión -->
-    <div id="arcadaControls" style="position: absolute; top: 50px; left: 10px;">
+    <div id="arcadaControls" style="position: absolute; top: 5px; left: 10px;">
         <button id="maxilar">Maxilar</button>
         <button id="oclusion">Oclusión</button>
         <button id="mandibula">Mandíbula</button>
         <button id="reset">3D</button>
     </div>
 
+    <!-- Cargar el archivo de funcionalidad app.js -->
     <script src="app.js"></script>
 </body>
 </html>
