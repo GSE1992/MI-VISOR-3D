@@ -2,56 +2,72 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xffffff, 1); // Cambia el fondo a blanco
 document.getElementById('viewer').appendChild(renderer.domElement);
 
 var loader = new THREE.STLLoader();
-var alignerNumber = 1; // Inicializar con el primer alineador
+var currentAligner = 1;
+var maxAligners = 10;
+var isPlaying = false;
+var loop = false;
+var maxilarMesh, mandibulaMesh;
 
-// Función para cargar el alineador
+// Cargar el primer alineador al inicio
+loadAligner(currentAligner);
+
+// Función para cargar un alineador específico
 function loadAligner(alignerNumber) {
-    loader.load('models/aligner_' + alignerNumber + '.stl', function (geometry) {
-        var material = new THREE.MeshBasicMaterial({ color: 0xB395F9 });
-        var mesh = new THREE.Mesh(geometry, material);
-        scene.clear();
-        scene.add(mesh);
-        animate();
+    loader.load(`Alineador ${alignerNumber}/Models/Tooth_UpperJaw.stl`, function (geometry) {
+        var material = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosado para encía
+        maxilarMesh = new THREE.Mesh(geometry, material);
+        scene.add(maxilarMesh);
+    });
+
+    loader.load(`Alineador ${alignerNumber}/Models/Tooth_LowerJaw.stl`, function (geometry) {
+        var material = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Blanco para dientes
+        mandibulaMesh = new THREE.Mesh(geometry, material);
+        scene.add(mandibulaMesh);
     });
 }
 
-camera.position.z = 5;
-loadAligner(1); // Cargar el primer alineador
-
-function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+// Función para limpiar la escena y cargar nuevo alineador
+function changeAligner(alignerNumber) {
+    scene.remove(maxilarMesh);
+    scene.remove(mandibulaMesh);
+    loadAligner(alignerNumber);
 }
 
-document.getElementById('alignerRange').addEventListener('input', function (event) {
-    alignerNumber = event.target.value;
-    document.getElementById('alignerNumber').textContent = alignerNumber + " / 10 Alineadores";
-    loadAligner(alignerNumber);
+// Slider para cambiar entre alineadores
+document.getElementById('alignerSlider').addEventListener('input', function (event) {
+    currentAligner = event.target.value;
+    document.getElementById('alignerLabel').innerText = `${currentAligner} / ${maxAligners} Alineadores`;
+    changeAligner(currentAligner);
 });
 
-document.getElementById('play').addEventListener('click', function () {
-    var interval = setInterval(function () {
-        if (alignerNumber < 10) {
-            alignerNumber++;
-        } else {
-            alignerNumber = 1;
-        }
-        document.getElementById('alignerRange').value = alignerNumber;
-        document.getElementById('alignerNumber').textContent = alignerNumber + " / 10 Alineadores";
-        loadAligner(alignerNumber);
-    }, 1000);
+// Botones de control de la vista (maxilar, mandíbula, etc.)
+document.getElementById('btnMaxilar').addEventListener('click', function () {
+    mandibulaMesh.visible = false;
+    maxilarMesh.visible = true;
 });
 
-document.getElementById('mostrarMaxilar').addEventListener('click', function () {
-    // Código para mostrar solo el maxilar
+document.getElementById('btnMandibula').addEventListener('click', function () {
+    maxilarMesh.visible = false;
+    mandibulaMesh.visible = true;
 });
-document.getElementById('mostrarOclusion').addEventListener('click', function () {
-    // Código para mostrar ambas arcadas en oclusión
+
+document.getElementById('btnOclusion').addEventListener('click', function () {
+    maxilarMesh.visible = true;
+    mandibulaMesh.visible = true;
 });
-document.getElementById('mostrarMandibula').addEventListener('click', function () {
-    // Código para mostrar solo la mandíbula
+
+document.getElementById('btn3D').addEventListener('click', function () {
+    maxilarMesh.rotation.x += 0.1; // Ejemplo de rotación 3D
+    mandibulaMesh.rotation.x += 0.1;
 });
+
+// Animar la escena
+var animate = function () {
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+};
+animate();
+

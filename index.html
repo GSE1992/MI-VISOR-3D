@@ -5,24 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visor 3D de Alineadores</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
+    
     <div id="viewer" style="width: 100%; height: 600px; background-color: white;"></div>
 
-    <div id="controls">
-        <button id="mostrarMaxilar">Maxilar</button>
-        <button id="mostrarOclusion">Oclusión</button>
-        <button id="mostrarMandibula">Mandíbula</button>
+    <!-- Barra inferior para controlar los alineadores -->
+    <div id="controls" style="text-align: center; margin-top: 10px;">
+        <button id="playButton">▶️</button>
+        <button id="pauseButton">⏸️</button>
+        <input type="range" id="alignerSlider" min="1" max="10" value="1">
+        <span id="alignerLabel">1 / 10 Alineadores</span>
+        <button id="loopButton">🔁</button>
     </div>
 
-    <div id="slider-container">
-        <button id="play">▶️</button>
-        <button id="prev">⏮️</button>
-        <input type="range" id="alignerRange" min="1" max="10" value="1">
-        <span id="alignerNumber">1 / 10 Alineadores</span>
-        <button id="loopButton">🔁</button>
+    <!-- Botones laterales para visualizar maxilar, mandibula y oclusión -->
+    <div id="arcadaControls" style="position: absolute; top: 50px; left: 10px;">
+        <button id="btnMaxilar">Maxilar</button>
+        <button id="btnOclusion">Oclusión</button>
+        <button id="btnMandibula">Mandíbula</button>
+        <button id="btn3D">3D</button>
     </div>
 
     <script src="app.js"></script>
