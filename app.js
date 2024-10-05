@@ -10,6 +10,9 @@ renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Añadir controles de órbita para que el usuario pueda rotar la vista 3D
+var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
 // Cargar modelos de los alineadores
 
 const loader = new THREE.STLLoader(); // Asegúrate de que tienes cargada la librería STLLoader
@@ -54,6 +57,8 @@ function cargarDientes(alineadorNum) {
       var toothMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Blanco para los dientes
       var mesh = new THREE.Mesh(geometry, toothMaterial);
       scene.add(mesh);
+    }, undefined, function (error) {
+      console.error('Error cargando archivo STL: ', file, error);
     });
   });
 
@@ -62,12 +67,16 @@ function cargarDientes(alineadorNum) {
     var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
     var mesh = new THREE.Mesh(geometry, gumMaterial);
     scene.add(mesh);
+  }, undefined, function (error) {
+    console.error('Error cargando archivo STL: ', `Alineador ${alineadorNum}/Models/Tooth_UpperJaw.stl`, error);
   });
 
   loader.load(`Alineador ${alineadorNum}/Models/Tooth_LowerJaw.stl`, function (geometry) {
     var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
     var mesh = new THREE.Mesh(geometry, gumMaterial);
     scene.add(mesh);
+  }, undefined, function (error) {
+    console.error('Error cargando archivo STL: ', `Alineador ${alineadorNum}/Models/Tooth_LowerJaw.stl`, error);
   });
 }
 
@@ -85,6 +94,7 @@ slider.addEventListener('input', function () {
 // Función de animación
 function animate() {
   requestAnimationFrame(animate);
+  controls.update(); // Actualizar controles de órbita
   renderer.render(scene, camera);
 }
 animate();
