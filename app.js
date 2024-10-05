@@ -1,73 +1,90 @@
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-var renderer = new THREE.WebGLRenderer();
+// Configuración del fondo blanco
+scene = new THREE.Scene();
+scene.background = new THREE.Color(0xffffff); // Fondo blanco
+
+// Configuración de la cámara y luces
+camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
+
+renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('viewer').appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
-var loader = new THREE.STLLoader();
-var currentAligner = 1;
-var maxAligners = 10;
-var isPlaying = false;
-var loop = false;
-var maxilarMesh, mandibulaMesh;
+// Cargar modelos de los alineadores
 
-// Cargar el primer alineador al inicio
-loadAligner(currentAligner);
+const loader = new THREE.STLLoader(); // Asegúrate de que tienes cargada la librería STLLoader
 
-// Función para cargar un alineador específico
-function loadAligner(alignerNumber) {
-    loader.load(`Alineador ${alignerNumber}/Models/Tooth_UpperJaw.stl`, function (geometry) {
-        var material = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosado para encía
-        maxilarMesh = new THREE.Mesh(geometry, material);
-        scene.add(maxilarMesh);
+// Función para cargar y mostrar los dientes
+function cargarDientes(alineadorNum) {
+  const teethFiles = [
+    `Alineador ${alineadorNum}/Models/Tooth_2.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_3.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_4.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_5.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_6.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_7.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_8.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_9.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_10.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_11.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_12.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_13.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_14.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_15.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_16.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_17.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_18.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_19.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_20.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_21.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_22.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_23.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_24.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_25.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_26.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_27.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_28.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_29.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_30.stl`,
+    `Alineador ${alineadorNum}/Models/Tooth_31.stl`
+  ];
+
+  teethFiles.forEach(function (file) {
+    loader.load(file, function (geometry) {
+      var toothMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Blanco para los dientes
+      var mesh = new THREE.Mesh(geometry, toothMaterial);
+      scene.add(mesh);
     });
+  });
 
-    loader.load(`Alineador ${alignerNumber}/Models/Tooth_LowerJaw.stl`, function (geometry) {
-        var material = new THREE.MeshBasicMaterial({ color: 0xffffff }); // Blanco para dientes
-        mandibulaMesh = new THREE.Mesh(geometry, material);
-        scene.add(mandibulaMesh);
-    });
+  // Cargar encías (mandíbula superior e inferior)
+  loader.load(`Alineador ${alineadorNum}/Models/Tooth_UpperJaw.stl`, function (geometry) {
+    var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
+    var mesh = new THREE.Mesh(geometry, gumMaterial);
+    scene.add(mesh);
+  });
+
+  loader.load(`Alineador ${alineadorNum}/Models/Tooth_LowerJaw.stl`, function (geometry) {
+    var gumMaterial = new THREE.MeshBasicMaterial({ color: 0xff9999 }); // Rosa para las encías
+    var mesh = new THREE.Mesh(geometry, gumMaterial);
+    scene.add(mesh);
+  });
 }
 
-// Función para limpiar la escena y cargar nuevo alineador
-function changeAligner(alignerNumber) {
-    scene.remove(maxilarMesh);
-    scene.remove(mandibulaMesh);
-    loadAligner(alignerNumber);
+// Inicializar con el Alineador 1
+cargarDientes(1);
+
+// Controlar los alineadores con un slider
+var slider = document.getElementById('slider');
+slider.addEventListener('input', function () {
+  var alineadorNum = this.value;
+  scene.clear(); // Limpiar la escena antes de cargar los nuevos modelos
+  cargarDientes(alineadorNum);
+});
+
+// Función de animación
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
 }
-
-// Slider para cambiar entre alineadores
-document.getElementById('alignerSlider').addEventListener('input', function (event) {
-    currentAligner = event.target.value;
-    document.getElementById('alignerLabel').innerText = `${currentAligner} / ${maxAligners} Alineadores`;
-    changeAligner(currentAligner);
-});
-
-// Botones de control de la vista (maxilar, mandíbula, etc.)
-document.getElementById('btnMaxilar').addEventListener('click', function () {
-    mandibulaMesh.visible = false;
-    maxilarMesh.visible = true;
-});
-
-document.getElementById('btnMandibula').addEventListener('click', function () {
-    maxilarMesh.visible = false;
-    mandibulaMesh.visible = true;
-});
-
-document.getElementById('btnOclusion').addEventListener('click', function () {
-    maxilarMesh.visible = true;
-    mandibulaMesh.visible = true;
-});
-
-document.getElementById('btn3D').addEventListener('click', function () {
-    maxilarMesh.rotation.x += 0.1; // Ejemplo de rotación 3D
-    mandibulaMesh.rotation.x += 0.1;
-});
-
-// Animar la escena
-var animate = function () {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
-};
 animate();
-
