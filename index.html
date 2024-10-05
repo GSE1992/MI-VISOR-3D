@@ -4,32 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visor 3D de Alineadores</title>
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Importar Three.js desde CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
-    <div id="viewer" style="width: 100%; height: 600px; background-color: white;"></div>
 
-    <!-- Barra inferior para controlar los alineadores -->
-    <div id="controls" style="text-align: center; margin-top: 10px;">
-        <button id="play">▶️</button>
-        <button id="pause">⏸️</button>
-        <input id="slider" type="range" min="1" max="10" value="1">
-        <span id="alignerCount">1 / 10 Alineadores</span>
-    </div>
+    <!-- Botones para cargar diferentes alineadores -->
+    <button onclick="cargarAlineador(1)">Alineador 1</button>
+    <button onclick="cargarAlineador(2)">Alineador 2</button>
+    <button onclick="cargarAlineador(3)">Alineador 3</button>
 
-    <!-- Botones laterales para visualizar maxilar, mandíbula y oclusión -->
-    <div id="arcadaControls" style="position: absolute; top: 5px; left: 10px;">
-        <button id="maxilar">Maxilar</button>
-        <button id="oclusion">Oclusión</button>
-        <button id="mandibula">Mandíbula</button>
-        <button id="reset">3D</button>
-    </div>
+    <!-- Visor 3D donde se cargan los modelos -->
+    <iframe id="visor3D" src="https://3dviewer.net/embed.html" width="800" height="600" frameborder="0"></iframe>
 
-    <!-- Cargar el archivo de funcionalidad app.js -->
-    <script type="module" src="app.js"></script>
+    <!-- Función para cargar todos los archivos STL de un alineador -->
+    <script>
+        function cargarAlineador(alineador) {
+            const files = [];
+            
+            for (let i = 1; i <= 31; i++) { // Ajusta el número según los archivos STL que tengas
+                const nombreArchivo = (i === 32) ? 'UpperJaw.stl' : (i === 33) ? 'LowerJaw.stl' : `Tooth_${i}.stl`;
+                files.push(`https://raw.githubusercontent.com/usuario/repositorio/main/Alineador${alineador}/Models/${nombreArchivo}`);
+            }
+
+            // Ahora puedes cargar el primer archivo en el visor (o concatenar todos los archivos para verlos juntos si el visor lo permite)
+            cargarModelo(files[0]); // Aquí puedes hacer más lógica para manejar varios archivos
+        }
+
+        function cargarModelo(url) {
+            document.getElementById('visor3D').src = 'https://3dviewer.net/embed.html?file=' + url;
+        }
+    </script>
 </body>
 </html>
