@@ -4,34 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visor 3D de Alineadores</title>
+    <script src="three.min.js"></script> <!-- Añadir la librería Three.js -->
+    <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js/examples/js/loaders/STLLoader.js"></script> <!-- Loader para STL -->
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: purple;
+            margin-top: 20px;
+        }
+        #viewer-container {
+            width: 100%;
+            height: 600px;
+            margin-top: 20px;
+        }
+        canvas {
+            width: 100%;
+            height: 600px;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .buttons button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
 
-    <!-- Botones para cargar diferentes alineadores -->
-    <button onclick="cargarAlineador(1)">Alineador 1</button>
-    <button onclick="cargarAlineador(2)">Alineador 2</button>
-    <button onclick="cargarAlineador(3)">Alineador 3</button>
+    <!-- Botones para seleccionar alineadores -->
+    <div class="buttons">
+        <button onclick="cargarAlineador(1)">Alineador 1</button>
+        <button onclick="cargarAlineador(2)">Alineador 2</button>
+        <button onclick="cargarAlineador(3)">Alineador 3</button>
+        <button onclick="cargarAlineador(4)">Alineador 4</button>
+    </div>
 
-    <!-- Visor 3D donde se cargan los modelos -->
-    <iframe id="visor3D" src="https://3dviewer.net/embed.html" width="800" height="600" frameborder="0"></iframe>
+    <!-- Contenedor del visor 3D -->
+    <div id="viewer-container"></div>
 
-    <!-- Función para cargar todos los archivos STL de un alineador -->
     <script>
-        function cargarAlineador(alineador) {
-            const files = [];
-            
-            for (let i = 1; i <= 31; i++) { // Ajusta el número según los archivos STL que tengas
-                const nombreArchivo = (i === 32) ? 'UpperJaw.stl' : (i === 33) ? 'LowerJaw.stl' : `Tooth_${i}.stl`;
-                files.push(`https://raw.githubusercontent.com/usuario/repositorio/main/Alineador${alineador}/Models/${nombreArchivo}`);
-            }
+        // Configuración básica del Visor 3D usando Three.js
+        var scene, camera, renderer, loader, stlMesh;
 
-            // Ahora puedes cargar el primer archivo en el visor (o concatenar todos los archivos para verlos juntos si el visor lo permite)
-            cargarModelo(files[0]); // Aquí puedes hacer más lógica para manejar varios archivos
+        init(); // Inicializa el visor 3D
+
+        function init() {
+            // Crear la escena
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+
+            // Crear la cámara
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 100);
+
+            // Crear el renderizador
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, 600);
+            document.getElementById('viewer-container').appendChild(renderer.domElement);
+
+            // Añadir luz a la escena
+            var light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(0, 0, 1).normalize();
+            scene.add(light);
+
+            // Cargar el archivo STL inicial
+            loader = new THREE.STLLoader();
+            cargarAlineador(1); // Carga por defecto el Alineador 1
+
+            // Renderizar la escena
+            render();
         }
 
-        function cargarModelo(url) {
-            document.getElementById('visor3D').src = 'https://3dviewer.net/embed.html?file=' + url;
+        function cargarAlineador(alineador) {
+            if (stlMesh) {
+                scene.remove(stlMesh); // Elimina el modelo anterior si existe
+            }
+
+            // Ruta al archivo STL en GitHub
+            var stlFilePath = 'https://raw.githubusercontent.com/GSE1992/MI-VISOR-3D/main/Alineador' + alineador + '/Models/Tooth1.stl';
+            
+            // Cargar el archivo STL
+            loader.load(stlFilePath, function (geometry) {
+                var material = new THREE.MeshPhongMaterial({ color: 0x0055ff });
+                stlMesh = new THREE.Mesh(geometry, material);
+                stlMesh.rotation.x = -0.5 * Math.PI;
+                stlMesh.scale.set(0.5, 0.5, 0.5);
+                scene.add(stlMesh);
+            });
+
+            render();
+        }
+
+        // Función para renderizar la escena en un bucle
+        function render() {
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
         }
     </script>
 </body>
