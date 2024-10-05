@@ -11,40 +11,51 @@
             margin: 0;
             padding: 0;
         }
+
         h1 {
-            color: #6A0DAD;
+            color: #800080;
         }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
         button {
-            margin: 5px;
+            margin: 10px;
             padding: 10px 20px;
             font-size: 16px;
         }
+
         #viewer-container {
             width: 100%;
             height: 600px;
-            background-color: white;
+            background-color: #f0f0f0;
         }
     </style>
 </head>
 <body>
+
     <h1>Visor 3D de Alineadores</h1>
 
     <!-- Botones para seleccionar alineadores -->
-    <button id="botonAlineador1">Alineador 1</button>
-    <button id="botonAlineador2">Alineador 2</button>
-    <button id="botonAlineador3">Alineador 3</button>
-    <button id="botonAlineador4">Alineador 4</button>
+    <div class="buttons">
+        <button id="botonAlineador1">Alineador 1</button>
+        <button id="botonAlineador2">Alineador 2</button>
+        <button id="botonAlineador3">Alineador 3</button>
+        <button id="botonAlineador4">Alineador 4</button>
+    </div>
 
     <!-- Contenedor del visor 3D -->
     <div id="viewer-container"></div>
 
-    <!-- Incluir el archivo three.js -->
-    <script src="three.module.min.js"></script>
+    <!-- Cargar Three.js -->
+    <script src="three.min.js"></script>
 
-    <!-- Incluir el STLLoader.js -->
+    <!-- Cargar el archivo STLLoader.js -->
     <script src="STLLoader.js"></script>
 
-    <!-- Incluir el archivo app.js para manejar la lógica -->
+    <!-- Cargar el archivo de la lógica -->
     <script src="app.js"></script>
+
 </body>
 </html>
