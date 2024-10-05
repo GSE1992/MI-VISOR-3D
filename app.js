@@ -16,7 +16,7 @@ camera.position.z = 5;
 // Cargar el STLLoader
 const loader = new THREE.STLLoader();
 
-// Función para cargar y mostrar **todos los archivos STL** en una carpeta
+// Función para cargar y mostrar todos los archivos STL en una carpeta
 function cargarAlineador(carpeta) {
     const archivos = [
         'Tooth_2.stl', 'Tooth_3.stl', 'Tooth_4.stl', 'Tooth_5.stl', 'Tooth_6.stl', 'Tooth_7.stl',
@@ -58,3 +58,4 @@ function animate() {
     renderer.render(scene, camera);
 }
 animate();
+

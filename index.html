@@ -3,54 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval';">
     <title>Visor 3D de Alineadores</title>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            color: #6a0dad;
-        }
-        .buttons {
-            margin-bottom: 20px;
-        }
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            font-size: 16px;
-        }
-        #viewer-container {
-            width: 100%;
-            height: 500px;
-            background-color: #e0e0e0;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Visor 3D de Alineadores</h1>
-    
-    <!-- Botones para seleccionar alineadores -->
     <div class="buttons">
         <button id="botonAlineador1">Alineador 1</button>
         <button id="botonAlineador2">Alineador 2</button>
         <button id="botonAlineador3">Alineador 3</button>
         <button id="botonAlineador4">Alineador 4</button>
     </div>
-
-    <!-- Contenedor del visor 3D -->
     <div id="viewer-container"></div>
 
     <!-- Cargar Three.js desde CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    
     <!-- Cargar STLLoader.js desde CDN -->
     <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/STLLoader.js"></script>
-
     <!-- Cargar el archivo de la lógica -->
     <script src="app.js"></script>
 </body>
 </html>
+
 
